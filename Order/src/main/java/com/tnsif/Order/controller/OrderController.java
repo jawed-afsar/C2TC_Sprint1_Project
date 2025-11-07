@@ -1,7 +1,7 @@
 package com.tnsif.Order.controller;
 
 import com.tnsif.Order.entity.Order;
-import com.tnsif.Order.service.OrderServiceImpl;
+import com.tnsif.Order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    private OrderServiceImpl orderService;
+    private OrderService orderService;  // ✅ updated
 
     @PostMapping("/create")
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
@@ -31,9 +31,9 @@ public class OrderController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Order> updateOrderStatus(@PathVariable Long id, @RequestParam String status) {
-        Order updated = orderService.updateOrderStatus(id, status);
-        return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
+    public Order updateOrder(@PathVariable Long id,@RequestBody Order oc) {
+    	oc.setOrderId(id);
+    	return orderService.saveOrder(oc);
     }
 
     @DeleteMapping("/delete/{id}")
